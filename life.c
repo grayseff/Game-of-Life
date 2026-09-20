@@ -137,25 +137,26 @@ HandleInput(Life *life, size_t *cursor_x, size_t *cursor_y,
             *paused = !*paused;
             break;
 
-        case 'a':
+        case 'h':
             if (*cursor_x > 0)
                 (*cursor_x)--;
             break;
 
-        case 'd':
+        case 'l':
             if (*cursor_x + 1 < life->width)
                 (*cursor_x)++;
             break;
-        case 'w':
+        case 'k':
             if (*cursor_y > 0)
                 (*cursor_y)--;
             break;
-        case 's':
+        case 'j':
             if (*cursor_y + 1 < life->height)
                 (*cursor_y)++;
             break;
 
         case '\n':
+        case 'a':
             ToggleCell(life, *cursor_x, *cursor_y);
             break;
     }

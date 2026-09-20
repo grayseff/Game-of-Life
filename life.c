@@ -74,9 +74,11 @@ CountNeighbour(const Life *life, size_t x, size_t y){
     }
     return count;
 }
-static void
+static int
 LifeStep(Life *life)
 {
+    int alive = 0;
+
    for (size_t y = 0; y < life->height; y++){
         for (size_t x = 0; x < life->width; x++){
             size_t i = y * life->width + x;
@@ -85,12 +87,15 @@ LifeStep(Life *life)
            life->next[i] = 
                neighbours == 3 || 
                (life->cells[i] && neighbours == 2);
+           alive |= life->next[i];
         
         } 
    } 
    uint8_t *tmp = life->cells;
    life->cells = life->next;
    life->next = tmp;
+
+   return alive;
 
 }
 static void
@@ -212,7 +217,7 @@ main(int argc, char *argv[])
     while (running) {
         HandleInput(&life, &cursor_x, &cursor_y, &paused, &running);
         if (!paused)
-            LifeStep(&life);
+            paused = !LifeStep(&life);
         DrawLife(&life, cursor_x, cursor_y);
         nanosleep(&delay, NULL);
 
